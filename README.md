@@ -16,7 +16,7 @@ pip install -r requirements.txt
 export CLIENT_ID=< provided client id >
 export CLIENT_SECRET=< provided client secret >
 
-python main.go
+python main.py
 ```
 
 # Usage
