@@ -3,10 +3,10 @@ import logging
 import os
 import time
 
+import requests
 import uvloop as uvloop
 import websockets
 
-import cache
 import cybervox
 
 handler = logging.StreamHandler()
@@ -19,12 +19,30 @@ clientID = os.getenv("CLIENT_ID", "")
 clientSecret = os.getenv("CLIENT_SECRET", "")
 
 
+def getAccessToken(clientID, clientSecret):
+    request = {
+        'client_id':     clientID,
+        'client_secret': clientSecret,
+        'audience':      "https://api.cybervox.ai",
+        'grant_type':    "client_credentials"
+    }
+    logger.debug("fetching access token...")
+    response = requests.post("https://api.cybervox.ai/auth", json=request)
+    if response.status_code != 200:
+        return ""
+    return response.json()['access_token']
+
+
 async def main():
     if not clientID or not clientSecret:
         logger.fatal('abort: check "CLIENT_ID" and "CLIENT_SECRET" env vars')
         return
 
-    access_token = cache.getAccessToken(clientID, clientSecret)
+    access_token = getAccessToken(clientID, clientSecret)
+    if not access_token:
+        logger.fatal('abort: invalid access token')
+        return
+
     async with websockets.connect("wss://api.cybervox.ai/ws?access_token=" + access_token) as websocket:
         # --- PING ---
         ping_response = await cybervox.ping(websocket)
