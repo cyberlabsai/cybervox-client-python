@@ -51,7 +51,7 @@ async def main():
         logger.debug("   PING: Round-trip: %9.2f ms, Success: %s", delta * 1000.0, ping_payload['success'])
 
         # --- TTS ---
-        tts_response = await cybervox.tts(websocket, "Olá Mundo!")
+        tts_response = await cybervox.tts(websocket, "Olá Mundo!", "perola")
         tts_payload = tts_response['payload']
         delta = time.time() - tts_payload['timestamp']
         logger.debug('    TTS: Round-trip: %9.2f ms, Success: %s, Reason: "%s", AudioURL: https://api.cybervox.ai%s',

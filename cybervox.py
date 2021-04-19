@@ -20,11 +20,12 @@ async def ping(ws):
     return json.loads(await ws.recv())
 
 
-async def tts(ws, text):
+async def tts(ws, text, voice):
     """Send a text-to-speech request on an established websocket connection.
 
     :param ws: an established websocket connection
     :param text: the text to be converted to an WAVE file
+    :param voice: voice used to generate the WAVE file
     :return: the TTS response.
        >>> if resp['payload']['success'] is True then resp['payload']['audio_url']  # contains the converted audio URL.
        >>> if resp['payload']['success'] is False then resp['payload']['reason']  # contains the failure reason.
@@ -33,6 +34,7 @@ async def tts(ws, text):
         'emit':    "tts",
         'payload': {
             'text':      text,
+            'voice':     voice,
             'timestamp': int(time.time())
         }
     }
