@@ -16,7 +16,14 @@ pip install -r requirements.txt
 export CLIENT_ID=< provided client id >
 export CLIENT_SECRET=< provided client secret >
 
+# complete API
 python main.py
+
+# text-to-speech only
+python tts.py "olá mundo"
+
+# speech-to-text only
+python stt.py ola-mundo.wav
 ```
 
 # Usage
